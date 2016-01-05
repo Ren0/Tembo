@@ -1,0 +1,27 @@
+{
+  "name": "Tembo",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.10.2",
+    "express": "^4.11.1",
+    "mongojs": "^0.18.1",
+    "mongoose": "^4.3.4",
+	"jsonwebtoken": "~1.1.2",
+    "body-parser": "~1.9.2",
+    "morgan": "~1.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ren0/Tembo"
+  },
+  "author": "TODO",
+  "license": "TODO",
+  "homepage": "https://github.com/Ren0/Tembo"
+}
