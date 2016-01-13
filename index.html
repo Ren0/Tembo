@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App</title>
+    <base href=".">
+    <script src="angular2-polyfills.js"></script>
+    <script src="es6-shim.min.js"></script>
+    <script src="system.src.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.1/http.dev.js"></script>
+    <script>
+        System.config({packages: {app: {format: 'register', defaultExtension: 'js'}}});
+    </script>
+    <script src="Rx.js"></script>
+    <script src="angular2.dev.js"></script>
+    <script src="router.dev.js"></script>
+    <script>
+        System.import('./app/boot').then(null, console.error.bind(console));
+    </script>
+</head>
+<body>
+    <app>Loading..</app>
+</body>
+</html>

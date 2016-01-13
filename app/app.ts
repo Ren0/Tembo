@@ -1,37 +1,25 @@
 import {Component, View} from 'angular2/core';
-import {HTTP_PROVIDERS, Http} from 'angular2/http';
-import {AuthHttp} from 'angular2-jwt/angular2-jwt';
+import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 
+import {Home} from './home/home';
+import {Login} from './login/login';
+
+@Component({
+    selector: 'app',
+    directives: [ROUTER_DIRECTIVES],
+    template: `
+    <h1>App component</h1>
+
+    <router-outlet></router-outlet>
+  `
+})
+@RouteConfig([
+    { path: '/', redirectTo: ['Login'] },
+    { path: '/home', as: 'Home', component: Home },
+    { path: '/login', as: 'Login', component: Login }
+])
 export class App {
 
-    thing: string;
-
-    constructor(public authHttp:AuthHttp) {}
-
-    //getNoAuthThing() {
-    //    this.http.get('http://example.com/api/thing')
-    //        .map(res => res.json())
-    //        .subscribe(
-    //            data => this.thing = data,
-    //            err => console.log(error),
-    //            () => console.log('Request Complete')
-    //        );
-    //}
-
-    getThing() {
-        this.authHttp.get('http://example.com/api/thing')
-            .map(res => res.json())
-            .subscribe(
-                data => this.thing = data,
-                err => console.log(err),
-                () => console.log('Request Complete')
-            );
+    constructor() {
     }
 }
-
-//bootstrap(App, [
-//    HTTP_PROVIDERS,
-//    provide(AuthHttp, { useFactory: () => {
-//        return new AuthHttp()
-//    }})
-//])

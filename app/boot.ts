@@ -1,17 +1,13 @@
 import {bootstrap} from 'angular2/platform/browser';
 import {provide} from 'angular2/core';
-import {HTTP_PROVIDERS, Http} from 'angular2/http';
-import {AuthHttp, AuthConfig} from 'angular2-jwt/angular2-jwt';
+import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+import {HTTP_PROVIDERS} from 'angular2/http';
 import {App} from './app';
-
-//bootstrap(App, []);
+import {Authentication} from './authentication/authentication';
 
 bootstrap(App, [
+    ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    provide(AuthHttp, {
-        useFactory: (http) => {
-            return new AuthHttp(new AuthConfig(), http)
-        },
-        deps: [Http]
-    })
-])
+    provide(LocationStrategy, {useClass: HashLocationStrategy}),
+    Authentication
+]);
