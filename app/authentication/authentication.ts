@@ -27,7 +27,7 @@ export class Authentication {
             .subscribe(
                 data => {
                     console.log(data);
-                    //localStorage.setItem('id_token', data.id_token);
+                    localStorage.setItem('id_token', data.id_token);
                 },
                 err => console.log(err),
                 () => console.log('Authentication Complete')

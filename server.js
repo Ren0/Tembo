@@ -1,6 +1,4 @@
-// =================================================================
-// get the packages we need ========================================
-// =================================================================
+// get the packages we need
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -10,9 +8,7 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var User = require('./app/models/user'); // get our mongoose model
 
-// =================================================================
-// configuration ===================================================
-// =================================================================
+// configuration
 var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
 mongoose.connect('mongodb://localhost:27017/tembo'); // connect to database
 app.set('superSecret', 'thisisubersecret'); // secret variable
@@ -30,9 +26,7 @@ app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/'));
 app.use(express.static(__dirname + '/app/public'));
 
-// =================================================================
-// routes ==========================================================
-// =================================================================
+// routes
 app.get('/setup', function (req, res) {
 
     // create a sample user
@@ -58,20 +52,19 @@ app.get('/', function (req, res, next) {
     //res.sendFile('./index.html');
 });
 
-// ---------------------------------------------------------
+
 // get an instance of the router for api routes
-// ---------------------------------------------------------
 var apiRoutes = express.Router();
 
-// ---------------------------------------------------------
 // authentication (no middleware necessary since this isnt authenticated)
-// ---------------------------------------------------------
 // http://localhost:8080/api/authenticate
 apiRoutes.post('/authenticate', function (req, res) {
+    console.log('Authentication attempt for login: ' + req.body.username);
     // find the user
     User.findOne({
-        name: req.body.name
+        name: req.body.username
     }, function (err, user) {
+        console.log(user);
         if (err) throw err;
 
         if (!user) {
@@ -103,9 +96,8 @@ apiRoutes.post('/authenticate', function (req, res) {
     });
 });
 
-// ---------------------------------------------------------
+
 // route middleware to authenticate and check token
-// ---------------------------------------------------------
 apiRoutes.use(function (req, res, next) {
 
     // check header or url parameters or post parameters for token
@@ -138,9 +130,8 @@ apiRoutes.use(function (req, res, next) {
 
 });
 
-// ---------------------------------------------------------
+
 // authenticated routes
-// ---------------------------------------------------------
 apiRoutes.get('/', function (req, res) {
     res.json({message: 'Welcome to the coolest API on earth!'});
 });
@@ -157,8 +148,6 @@ apiRoutes.get('/check', function (req, res) {
 
 app.use('/api', apiRoutes);
 
-// =================================================================
-// start the server ================================================
-// =================================================================
+// start the server
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);

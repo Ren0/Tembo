@@ -8,8 +8,7 @@ import {Login} from './login/login';
     selector: 'app',
     directives: [ROUTER_DIRECTIVES],
     template: `
-    <h1>App component</h1>
-
+    <h1>-</h1>
     <router-outlet></router-outlet>
   `
 })

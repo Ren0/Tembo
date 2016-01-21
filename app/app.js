@@ -32,7 +32,7 @@ System.register(['angular2/core', 'angular2/router', './home/home', './login/log
                     core_1.Component({
                         selector: 'app',
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        template: "\n    <h1>App component</h1>\n\n    <router-outlet></router-outlet>\n  "
+                        template: "\n    <h1>-</h1>\n    <router-outlet></router-outlet>\n  "
                     }),
                     router_1.RouteConfig([
                         { path: '/', redirectTo: ['Login'] },

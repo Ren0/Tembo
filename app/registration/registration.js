@@ -9,7 +9,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, http_1;
-    var Authentication;
+    var Registration;
     return {
         setters:[
             function (core_1_1) {
@@ -20,15 +20,16 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
             },
             function (_1) {}],
         execute: function() {
-            Authentication = (function () {
-                function Authentication(http) {
+            Registration = (function () {
+                function Registration(http) {
                     this.http = http;
                     this.token = localStorage.getItem('token');
                 }
-                Authentication.prototype.login = function (username, password) {
-                    return this.http.post('/api/authenticate', JSON.stringify({
+                Registration.prototype.register = function (username, password, email) {
+                    return this.http.post('/api/register', JSON.stringify({
                         username: username,
-                        password: password
+                        password: password,
+                        emai: email
                     }), {
                         headers: new http_1.Headers({
                             'Content-Type': 'application/json'
@@ -38,7 +39,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                         .subscribe(function (data) {
                         console.log(data);
                         localStorage.setItem('id_token', data.id_token);
-                    }, function (err) { return console.log(err); }, function () { return console.log('Authentication Complete'); });
+                    }, function (err) { return console.log(err); }, function () { return console.log('Registration Complete'); });
                     //.map((res:any) => {
                     //    let data = res.json();
                     //    console.log(data);
@@ -46,26 +47,14 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     //    localStorage.setItem('token', this.token);
                     //});
                 };
-                Authentication.prototype.logout = function () {
-                    var _this = this;
-                    return this.http.get('/logout', {
-                        headers: new http_1.Headers({
-                            'x-security-token': this.token
-                        })
-                    })
-                        .map(function (res) {
-                        _this.token = undefined;
-                        localStorage.removeItem('token');
-                    });
-                };
-                Authentication = __decorate([
+                Registration = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], Authentication);
-                return Authentication;
+                ], Registration);
+                return Registration;
             })();
-            exports_1("Authentication", Authentication);
+            exports_1("Registration", Registration);
         }
     }
 });
-//# sourceMappingURL=authentication.js.map
+//# sourceMappingURL=registration.js.map

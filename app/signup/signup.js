@@ -9,7 +9,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, common_1, router_1, authentication_1;
-    var Login;
+    var SignUp;
     return {
         setters:[
             function (core_1_1) {
@@ -25,35 +25,36 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
                 authentication_1 = authentication_1_1;
             }],
         execute: function() {
-            Login = (function () {
-                function Login(fb, auth, router) {
+            SignUp = (function () {
+                function SignUp(fb, auth, router) {
                     this.auth = auth;
                     this.router = router;
                     this.error = false;
                     this.form = fb.group({
                         username: ['admin', common_1.Validators.required],
-                        password: ['admin', common_1.Validators.required]
+                        password: ['admin', common_1.Validators.required],
+                        admin: ['admin@admin.com', common_1.Validators.required]
                     });
                 }
-                Login.prototype.onSubmit = function (value) {
+                SignUp.prototype.onSubmit = function (value) {
                     this.auth.login(value.username, value.password);
                     //.subscribe(
                     //    (token: any) => { this.router.navigate(['../Home']); },
                     //    () => { this.error = true; }
                     //);
                 };
-                Login = __decorate([
+                SignUp = __decorate([
                     core_1.Component({
-                        selector: 'login',
+                        selector: 'signup',
                         directives: [common_1.FORM_DIRECTIVES, common_1.NgIf],
-                        template: "\n    <form [ngFormModel]=\"form\" (submit)=\"$event.preventDefault(); onSubmit(form.value)\">\n      <div *ngIf=\"error\">Check your password</div>\n      <div>\n        <label for=\"username\">Username</label>\n        <input type=\"text\" ngControl=\"username\">\n      </div>\n      <div>\n        <label for=\"password\">Password</label>\n        <input type=\"password\" ngControl=\"password\">\n      </div>\n      <div class=\"form-group\">\n        <button type=\"submit\" [disabled]=\"!form.valid\">Login</button>\n      </div>\n    </form>\n  "
+                        template: "\n    <form [ngFormModel]=\"form\" (submit)=\"$event.preventDefault(); onSubmit(form.value)\">\n      <div *ngIf=\"error\">TODO check error *ngIf</div>\n      <div>\n        <label for=\"username\">Username</label>\n        <input type=\"text\" ngControl=\"username\">\n      </div>\n      <div>\n        <label for=\"password\">Password</label>\n        <input type=\"password\" ngControl=\"password\">\n      </div>\n      <div>\n        <label for=\"email\">Email</label>\n        <input type=\"email\" ngControl=\"email\">\n      </div>\n      <div class=\"form-group\">\n        <button type=\"submit\" [disabled]=\"!form.valid\">Sign Up</button>\n      </div>\n    </form>\n  "
                     }), 
                     __metadata('design:paramtypes', [common_1.FormBuilder, authentication_1.Authentication, router_1.Router])
-                ], Login);
-                return Login;
+                ], SignUp);
+                return SignUp;
             })();
-            exports_1("Login", Login);
+            exports_1("SignUp", SignUp);
         }
     }
 });
-//# sourceMappingURL=login.js.map
+//# sourceMappingURL=signup.js.map
