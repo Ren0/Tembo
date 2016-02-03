@@ -1,11 +1,11 @@
 // authentication.ts
 import {Injectable} from 'angular2/core';
-import {Http, Headers} from 'angular2/http';
+import {Http, Headers, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class Authentication {
+export class AuthenticationService {
     token:string;
     http:Http;
 
@@ -24,6 +24,9 @@ export class Authentication {
                 })
             })
             .map(response => response.json())
+            //.catch(this,handleError);
+
+            // TODO: move subscribe to caller
             .subscribe(
                 data => {
                     console.log(data);
@@ -32,12 +35,17 @@ export class Authentication {
                 err => console.log(err),
                 () => console.log('Authentication Complete')
             );
+
             //.map((res:any) => {
             //    let data = res.json();
             //    console.log(data);
             //    this.token = data.token;
             //    localStorage.setItem('token', this.token);
             //});
+    }
+
+    private handleError(error: Response) {
+
     }
 
     logout() {

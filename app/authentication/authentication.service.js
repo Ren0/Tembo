@@ -9,7 +9,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, http_1;
-    var Authentication;
+    var AuthenticationService;
     return {
         setters:[
             function (core_1_1) {
@@ -20,12 +20,12 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
             },
             function (_1) {}],
         execute: function() {
-            Authentication = (function () {
-                function Authentication(http) {
+            AuthenticationService = (function () {
+                function AuthenticationService(http) {
                     this.http = http;
                     this.token = localStorage.getItem('token');
                 }
-                Authentication.prototype.login = function (username, password) {
+                AuthenticationService.prototype.login = function (username, password) {
                     return this.http.post('/api/authenticate', JSON.stringify({
                         username: username,
                         password: password
@@ -46,7 +46,9 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     //    localStorage.setItem('token', this.token);
                     //});
                 };
-                Authentication.prototype.logout = function () {
+                AuthenticationService.prototype.handleError = function (error) {
+                };
+                AuthenticationService.prototype.logout = function () {
                     var _this = this;
                     return this.http.get('/logout', {
                         headers: new http_1.Headers({
@@ -58,14 +60,14 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                         localStorage.removeItem('token');
                     });
                 };
-                Authentication = __decorate([
+                AuthenticationService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], Authentication);
-                return Authentication;
+                ], AuthenticationService);
+                return AuthenticationService;
             })();
-            exports_1("Authentication", Authentication);
+            exports_1("AuthenticationService", AuthenticationService);
         }
     }
 });
-//# sourceMappingURL=authentication.js.map
+//# sourceMappingURL=authentication.service.js.mape.js.map
