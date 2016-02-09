@@ -34,17 +34,15 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                             'Content-Type': 'application/json'
                         })
                     })
-                        .map(function (response) { return response.json(); })
-                        .subscribe(function (data) {
-                        console.log(data);
-                        localStorage.setItem('id_token', data.id_token);
-                    }, function (err) { return console.log(err); }, function () { return console.log('Authentication Complete'); });
-                    //.map((res:any) => {
-                    //    let data = res.json();
-                    //    console.log(data);
-                    //    this.token = data.token;
-                    //    localStorage.setItem('token', this.token);
-                    //});
+                        .map(function (response) { return response.json(); });
+                    //.subscribe(
+                    //    data => {
+                    //        console.log('Token from server: ');
+                    //        console.log(data);
+                    //        localStorage.setItem('token', data.id_token);
+                    //    }
+                    //)
+                    //.catch(this,handleError);
                 };
                 AuthenticationService.prototype.handleError = function (error) {
                 };
@@ -70,4 +68,4 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
         }
     }
 });
-//# sourceMappingURL=authentication.service.js.mape.js.map
+//# sourceMappingURL=authentication.service.js.map

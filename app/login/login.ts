@@ -1,12 +1,12 @@
 // login.ts
 import {Component} from 'angular2/core';
 import {FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup, NgIf} from 'angular2/common';
-import {Router} from 'angular2/router';
-import {Authentication} from '../authentication/authentication';
+import {ROUTER_DIRECTIVES, Router} from 'angular2/router';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
     selector: 'login',
-    directives: [ FORM_DIRECTIVES, NgIf ],
+    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES, NgIf],
     template: `
     <form [ngFormModel]="form" (submit)="$event.preventDefault(); onSubmit(form.value)">
       <div *ngIf="error">Check your password</div>
@@ -21,25 +21,39 @@ import {Authentication} from '../authentication/authentication';
       <div class="form-group">
         <button type="submit" [disabled]="!form.valid">Login</button>
       </div>
+      <a [routerLink]="['SignUp']">S</a>
+      <a [routerLink]="['Home']">H</a>
     </form>
   `
 })
 
 export class Login {
-    form: ControlGroup;
-    error: boolean = false;
-    constructor(fb: FormBuilder, public auth: Authentication, public router: Router) {
+    form:ControlGroup;
+    error:boolean = false;
+
+    constructor(fb:FormBuilder, public auth:AuthenticationService, public router:Router) {
         this.form = fb.group({
-            username:  ['admin', Validators.required],
-            password:  ['admin', Validators.required]
+            username: ['admin', Validators.required],
+            password: ['admin', Validators.required]
         });
     }
 
-    onSubmit(value: any) {
-        this.auth.login(value.username, value.password);
-            //.subscribe(
-            //    (token: any) => { this.router.navigate(['../Home']); },
-            //    () => { this.error = true; }
-            //);
+    onSubmit(value:any) {
+        this.auth.login(value.username, value.password)
+            .subscribe(
+                data => {
+                    console.log('Token from server: ');
+                    console.log(data);
+                    localStorage.setItem('token', data.token);
+                    this.router.navigate(['../Home'])
+                }
+                //,
+                //err => console.log(err),
+                //() => console.log('Authentication Complete')
+            );
+        //.subscribe(
+        //    (token: any) => { this.router.navigate(['../Home']); },
+        //    () => { this.error = true; }
+        //);
     }
 }

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router', '../authentication/authentication'], function(exports_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/router', '../authentication/authentication.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, authentication_1;
+    var core_1, common_1, router_1, authentication_service_1;
     var Login;
     return {
         setters:[
@@ -21,8 +21,8 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (authentication_1_1) {
-                authentication_1 = authentication_1_1;
+            function (authentication_service_1_1) {
+                authentication_service_1 = authentication_service_1_1;
             }],
         execute: function() {
             Login = (function () {
@@ -36,7 +36,14 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
                     });
                 }
                 Login.prototype.onSubmit = function (value) {
-                    this.auth.login(value.username, value.password);
+                    var _this = this;
+                    this.auth.login(value.username, value.password)
+                        .subscribe(function (data) {
+                        console.log('Token from server: ');
+                        console.log(data);
+                        localStorage.setItem('token', data.token);
+                        _this.router.navigate(['../Home']);
+                    });
                     //.subscribe(
                     //    (token: any) => { this.router.navigate(['../Home']); },
                     //    () => { this.error = true; }
@@ -45,10 +52,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
                 Login = __decorate([
                     core_1.Component({
                         selector: 'login',
-                        directives: [common_1.FORM_DIRECTIVES, common_1.NgIf],
-                        template: "\n    <form [ngFormModel]=\"form\" (submit)=\"$event.preventDefault(); onSubmit(form.value)\">\n      <div *ngIf=\"error\">Check your password</div>\n      <div>\n        <label for=\"username\">Username</label>\n        <input type=\"text\" ngControl=\"username\">\n      </div>\n      <div>\n        <label for=\"password\">Password</label>\n        <input type=\"password\" ngControl=\"password\">\n      </div>\n      <div class=\"form-group\">\n        <button type=\"submit\" [disabled]=\"!form.valid\">Login</button>\n      </div>\n    </form>\n  "
+                        directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.NgIf],
+                        template: "\n    <form [ngFormModel]=\"form\" (submit)=\"$event.preventDefault(); onSubmit(form.value)\">\n      <div *ngIf=\"error\">Check your password</div>\n      <div>\n        <label for=\"username\">Username</label>\n        <input type=\"text\" ngControl=\"username\">\n      </div>\n      <div>\n        <label for=\"password\">Password</label>\n        <input type=\"password\" ngControl=\"password\">\n      </div>\n      <div class=\"form-group\">\n        <button type=\"submit\" [disabled]=\"!form.valid\">Login</button>\n      </div>\n      <a [routerLink]=\"['SignUp']\">S</a>\n      <a [routerLink]=\"['Home']\">H</a>\n    </form>\n  "
                     }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, authentication_1.Authentication, router_1.Router])
+                    __metadata('design:paramtypes', [common_1.FormBuilder, authentication_service_1.AuthenticationService, router_1.Router])
                 ], Login);
                 return Login;
             })();

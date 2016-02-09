@@ -24,27 +24,18 @@ export class AuthenticationService {
                 })
             })
             .map(response => response.json())
-            //.catch(this,handleError);
+            //.subscribe(
+            //    data => {
+            //        console.log('Token from server: ');
+            //        console.log(data);
+            //        localStorage.setItem('token', data.id_token);
+            //    }
+            //)
 
-            // TODO: move subscribe to caller
-            .subscribe(
-                data => {
-                    console.log(data);
-                    localStorage.setItem('id_token', data.id_token);
-                },
-                err => console.log(err),
-                () => console.log('Authentication Complete')
-            );
-
-            //.map((res:any) => {
-            //    let data = res.json();
-            //    console.log(data);
-            //    this.token = data.token;
-            //    localStorage.setItem('token', this.token);
-            //});
+        //.catch(this,handleError);
     }
 
-    private handleError(error: Response) {
+    private handleError(error:Response) {
 
     }
 

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', '../authentication/authentication', '../authentication/is-loggedin'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', '../authentication/authentication.service', '../authentication/is-loggedin', '../memo/memo.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', '../authentication/authenti
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, authentication_1, is_loggedin_1;
+    var core_1, router_1, authentication_service_1, is_loggedin_1, memo_service_1;
     var Home;
     return {
         setters:[
@@ -18,18 +18,29 @@ System.register(['angular2/core', 'angular2/router', '../authentication/authenti
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (authentication_1_1) {
-                authentication_1 = authentication_1_1;
+            function (authentication_service_1_1) {
+                authentication_service_1 = authentication_service_1_1;
             },
             function (is_loggedin_1_1) {
                 is_loggedin_1 = is_loggedin_1_1;
+            },
+            function (memo_service_1_1) {
+                memo_service_1 = memo_service_1_1;
             }],
         execute: function() {
             Home = (function () {
-                function Home(auth, router) {
+                function Home(auth, router, memoservice) {
                     this.auth = auth;
                     this.router = router;
+                    this.memoservice = memoservice;
                 }
+                Home.prototype.ngOnInit = function () {
+                    console.log('Home onInit');
+                    this.memoservice.getUserMemos()
+                        .subscribe(function (data) {
+                        console.log(data);
+                    }, function (err) { return console.log(err); }, function () { return console.log('Get memos Complete'); });
+                };
                 Home.prototype.onLogout = function () {
                     var _this = this;
                     this.auth.logout()
@@ -39,10 +50,10 @@ System.register(['angular2/core', 'angular2/router', '../authentication/authenti
                     core_1.Component({
                         selector: 'home',
                         directives: [],
-                        template: "\n    <h2>I am logged in</h2>\n    <a href=\"#\" (click)=\"onLogout()\">Logout</a>\n  "
+                        template: "\n    <h2>---H</h2>\n    <a href=\"#\" (click)=\"onLogout()\">Logout</a>\n  "
                     }),
                     router_1.CanActivate(function () { return is_loggedin_1.isLoggedin(); }), 
-                    __metadata('design:paramtypes', [authentication_1.Authentication, router_1.Router])
+                    __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, router_1.Router, memo_service_1.MemoService])
                 ], Home);
                 return Home;
             })();

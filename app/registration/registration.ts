@@ -24,14 +24,14 @@ export class Registration {
                 })
             })
             .map(response => response.json())
-            .subscribe(
-                data => {
-                    console.log(data);
-                    localStorage.setItem('id_token', data.id_token);
-                },
-                err => console.log(err),
-                () => console.log('Registration Complete')
-            );
+            //.subscribe(
+            //    data => {
+            //        console.log(data);
+            //        localStorage.setItem('id_token', data.id_token);
+            //    },
+            //    err => console.log(err),
+            //    () => console.log('Registration Complete')
+            //);
         //.map((res:any) => {
         //    let data = res.json();
         //    console.log(data);

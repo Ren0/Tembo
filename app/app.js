@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './home/home', './login/login'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './home/home', './login/login', './signup/signup'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', './home/home', './login/log
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, home_1, login_1;
+    var core_1, router_1, home_1, login_1, signup_1;
     var App;
     return {
         setters:[
@@ -23,6 +23,9 @@ System.register(['angular2/core', 'angular2/router', './home/home', './login/log
             },
             function (login_1_1) {
                 login_1 = login_1_1;
+            },
+            function (signup_1_1) {
+                signup_1 = signup_1_1;
             }],
         execute: function() {
             App = (function () {
@@ -32,12 +35,13 @@ System.register(['angular2/core', 'angular2/router', './home/home', './login/log
                     core_1.Component({
                         selector: 'app',
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        template: "\n    <h1>-</h1>\n    <router-outlet></router-outlet>\n  "
+                        template: "\n    <h1>-A</h1>\n    <router-outlet></router-outlet>\n  "
                     }),
                     router_1.RouteConfig([
                         { path: '/', redirectTo: ['Login'] },
                         { path: '/home', as: 'Home', component: home_1.Home },
-                        { path: '/login', as: 'Login', component: login_1.Login }
+                        { path: '/login', as: 'Login', component: login_1.Login },
+                        { path: '/signup', as: 'SignUp', component: signup_1.SignUp }
                     ]), 
                     __metadata('design:paramtypes', [])
                 ], App);

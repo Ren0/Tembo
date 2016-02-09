@@ -1,11 +1,12 @@
 import {Component} from 'angular2/core';
 import {FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup, NgIf} from 'angular2/common';
-import {Router} from 'angular2/router';
-import {Authentication} from '../authentication/authentication';
+import {ROUTER_DIRECTIVES, Router} from 'angular2/router';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {Registration} from "../registration/registration";
 
 @Component({
     selector: 'signup',
-    directives: [ FORM_DIRECTIVES, NgIf ],
+    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES, NgIf],
     template: `
     <form [ngFormModel]="form" (submit)="$event.preventDefault(); onSubmit(form.value)">
       <div *ngIf="error">TODO check error *ngIf</div>
@@ -24,6 +25,8 @@ import {Authentication} from '../authentication/authentication';
       <div class="form-group">
         <button type="submit" [disabled]="!form.valid">Sign Up</button>
       </div>
+      <a [routerLink]="['Login']">L</a>
+      <a [routerLink]="['Home']">H</a>
     </form>
   `
 })
@@ -31,19 +34,25 @@ import {Authentication} from '../authentication/authentication';
 export class SignUp {
     form: ControlGroup;
     error: boolean = false;
-    constructor(fb: FormBuilder, public auth: Authentication, public router: Router) {
+    constructor(fb: FormBuilder, public reg: Registration, public router: Router) {
         this.form = fb.group({
             username:  ['admin', Validators.required],
             password:  ['admin', Validators.required],
-            admin:  ['admin@admin.com', Validators.required]
+            email:  ['admin@admin.com', Validators.required]
         });
     }
 
     onSubmit(value: any) {
-        this.auth.login(value.username, value.password);
-        //.subscribe(
-        //    (token: any) => { this.router.navigate(['../Home']); },
-        //    () => { this.error = true; }
-        //);
+        this.reg.register(value.username, value.password, value.email)
+        .subscribe(
+            data => {
+                console.log("HERE");
+                console.log(data);
+                localStorage.setItem('token', data.id_token);
+                this.router.navigate(['../Home'])
+            },
+            err => console.log(err),
+            () => console.log('Registration Complete')
+        );
     }
 }

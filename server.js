@@ -12,6 +12,7 @@ var User = require('./app/models/user'); // get our mongoose model
 var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
 mongoose.connect('mongodb://localhost:27017/tembo'); // connect to database
 app.set('superSecret', 'thisisubersecret'); // secret variable
+var tokenExpiry = 10; // seconds
 
 // use body parser so we can get info from POST and/or URL parameters
 app.use(bodyParser.urlencoded({extended: false}));
@@ -80,9 +81,9 @@ apiRoutes.post('/authenticate', function (req, res) {
 
                 // if user is found and password is right
                 // create a token
-                var token = jwt.sign(user, app.get('superSecret'), {
-                    expiresInMinutes: 1440 // expires in 24 hours
-                });
+                //var token = jwt.sign(user, app.get('superSecret'), {expiresIn: '1s'});
+                console.log(user);
+                var token = jwt.sign(user, app.get('superSecret'), {expiresIn: tokenExpiry});
 
                 res.json({
                     success: true,
@@ -96,12 +97,59 @@ apiRoutes.post('/authenticate', function (req, res) {
     });
 });
 
+apiRoutes.post('/register', function (req, res) {
+    console.log('Registration attempt with login: ' + req.body.username);
+    // find the user
+    User.findOne({
+        name: req.body.username
+    }, function (err, user) {
+        console.log(user);
+        if (err) throw err;
+
+        if (!user) {
+            var newUser = new User({
+                name: 'admin',
+                password: 'admin',
+                admin: true
+            });
+            newUser.save(function (err) {
+                if (err) throw err;
+
+                console.log('User saved successfully');
+
+                var token = jwt.sign(newUser, app.get('superSecret'), {expiresIn: tokenExpiry});
+
+                res.json({
+                    success: true,
+                    message: 'Enjoy your token!',
+                    token: token
+                });
+            });
+        } else if (user) {
+            res.status(401).send('Registration failed. User is already registered');
+        }
+
+    });
+});
+
+//apiRoutes.post('/logout', function (req, res) {
+//    console.log('Logout attempt with login: ' + req.body.username);
+//    User.findOne({
+//        name: req.body.username
+//    }, function (err, user) {
+//        console.log(user);
+//        jwt.
+//    });
+//});
 
 // route middleware to authenticate and check token
 apiRoutes.use(function (req, res, next) {
 
     // check header or url parameters or post parameters for token
     var token = req.body.token || req.param('token') || req.headers['x-access-token'];
+    console.log('-');
+    console.log(token);
+    console.log('--');
 
     // decode token
     if (token) {
@@ -111,6 +159,7 @@ apiRoutes.use(function (req, res, next) {
             if (err) {
                 return res.json({success: false, message: 'Failed to authenticate token.'});
             } else {
+                console.log("Token ok");
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
                 next();
@@ -140,6 +189,17 @@ apiRoutes.get('/users', function (req, res) {
     User.find({}, function (err, users) {
         res.json(users);
     });
+});
+
+apiRoutes.get('/memo', function (req, res) {
+    //User.find({}, function (err, users) {
+    res.json({message: 'Get memos from Server'});
+    //});
+});
+
+apiRoutes.get('/home', function (req, res) {
+    console.log('HOME');
+    res.json({message: 'Home'});
 });
 
 apiRoutes.get('/check', function (req, res) {
