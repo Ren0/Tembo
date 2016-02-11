@@ -31,29 +31,21 @@ export class Login {
     form:ControlGroup;
     error:boolean = false;
 
-    constructor(fb:FormBuilder, public auth:AuthenticationService, public router:Router) {
+    constructor(fb: FormBuilder, public auth: AuthenticationService, public router: Router) {
         this.form = fb.group({
             username: ['admin', Validators.required],
             password: ['admin', Validators.required]
         });
     }
 
-    onSubmit(value:any) {
+    onSubmit(value: any) {
         this.auth.login(value.username, value.password)
             .subscribe(
                 data => {
-                    console.log('Token from server: ');
-                    console.log(data);
+                    console.log('Token from server: ' + data.token);
                     localStorage.setItem('token', data.token);
                     this.router.navigate(['../Home'])
                 }
-                //,
-                //err => console.log(err),
-                //() => console.log('Authentication Complete')
             );
-        //.subscribe(
-        //    (token: any) => { this.router.navigate(['../Home']); },
-        //    () => { this.error = true; }
-        //);
     }
 }

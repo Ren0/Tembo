@@ -19,9 +19,10 @@
     "ejs": "~1.0.0"
   },
   "devDependencies": {
-    "typescript": "^1.7.5",
     "concurrently": "^1.0.0",
-    "lite-server": "^1.3.2"
+    "jasmine-core": "2.4.1",
+    "lite-server": "^1.3.2",
+    "typescript": "^1.7.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

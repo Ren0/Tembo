@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/operator/map', 'rxjs/add/operator/catch'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/operator/map', 'rxjs/add/operator/do', 'rxjs/add/operator/catch'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -22,25 +22,33 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
                 Observable_1 = Observable_1_1;
             },
             function (_1) {},
-            function (_2) {}],
+            function (_2) {},
+            function (_3) {}],
         execute: function() {
             MemoService = (function () {
                 function MemoService(http) {
                     this.http = http;
-                    this.token = localStorage.getItem('token');
                 }
                 MemoService.prototype.getUserMemos = function () {
-                    console.log('getUserMemos(): ' + this.token);
+                    console.log('getUserMemos(): ' + localStorage.getItem('token'));
                     return this.http.get('/api/memo', {
                         headers: new http_1.Headers({
                             'Content-Type': 'application/json',
-                            'x-access-token': this.token
+                            'x-access-token': localStorage.getItem('token')
                         })
                     })
+                        .map(function (response) { return response.json().data; })
+                        .do(function (data) { return console.log(data); })
                         .catch(this.handleError);
                 };
+                // lost connection or token expired?
                 MemoService.prototype.handleError = function (error) {
-                    console.log('getMemo() ERROR');
+                    console.log(error.json());
+                    console.log(error.status);
+                    if (error.status == 401) {
+                        //this.router.navigate(['../Login'])
+                        localStorage.removeItem('token');
+                    }
                     return Observable_1.Observable.throw(error.json().error || 'Server error');
                 };
                 MemoService = __decorate([

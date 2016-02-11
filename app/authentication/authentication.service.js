@@ -23,7 +23,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
             AuthenticationService = (function () {
                 function AuthenticationService(http) {
                     this.http = http;
-                    this.token = localStorage.getItem('token');
                 }
                 AuthenticationService.prototype.login = function (username, password) {
                     return this.http.post('/api/authenticate', JSON.stringify({
@@ -35,26 +34,15 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                         })
                     })
                         .map(function (response) { return response.json(); });
-                    //.subscribe(
-                    //    data => {
-                    //        console.log('Token from server: ');
-                    //        console.log(data);
-                    //        localStorage.setItem('token', data.id_token);
-                    //    }
-                    //)
-                    //.catch(this,handleError);
                 };
-                AuthenticationService.prototype.handleError = function (error) {
-                };
+                AuthenticationService.prototype.handleError = function (error) { };
                 AuthenticationService.prototype.logout = function () {
-                    var _this = this;
-                    return this.http.get('/logout', {
+                    return this.http.post('/api/logout', '', {
                         headers: new http_1.Headers({
-                            'x-security-token': this.token
+                            'x-access-token': localStorage.getItem('token')
                         })
                     })
                         .map(function (res) {
-                        _this.token = undefined;
                         localStorage.removeItem('token');
                     });
                 };

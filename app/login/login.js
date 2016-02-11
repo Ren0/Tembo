@@ -39,15 +39,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../auth
                     var _this = this;
                     this.auth.login(value.username, value.password)
                         .subscribe(function (data) {
-                        console.log('Token from server: ');
-                        console.log(data);
+                        console.log('Token from server: ' + data.token);
                         localStorage.setItem('token', data.token);
                         _this.router.navigate(['../Home']);
                     });
-                    //.subscribe(
-                    //    (token: any) => { this.router.navigate(['../Home']); },
-                    //    () => { this.error = true; }
-                    //);
                 };
                 Login = __decorate([
                     core_1.Component({
